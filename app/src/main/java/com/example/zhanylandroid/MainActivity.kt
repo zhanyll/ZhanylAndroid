@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.zhanylandroid.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), Clicked {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,25 +14,6 @@ class MainActivity : AppCompatActivity(), Clicked {
 
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container, MainFragment())
-            .commit()
-    }
-
-    override fun onMain() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, MainFragment())
-            .addToBackStack(null)
-            .commit()
-    }
-
-    override fun onClick(id: Long) {
-        val episodeFragment = EpisodeFragment()
-        val bundle = Bundle()
-        bundle.putLong("id", id)
-        episodeFragment.arguments = bundle
-
-        supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, episodeFragment)
-            .addToBackStack(null)
             .commit()
     }
 }
