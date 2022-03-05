@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity(), Clicked {
 
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container, MainFragment())
+            .addToBackStack()
             .commit()
     }
 
