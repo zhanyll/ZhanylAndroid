@@ -51,7 +51,7 @@ class MainFragment: Fragment(R.layout.main_fragment) {
                         title = it.title,
                         season = it.season,
                         air_date = it.air_date,
-                        characters = it.characters.toString(),
+                        characters = it.characters,
                         episode = it.episode,
                         series = it.series
                     )

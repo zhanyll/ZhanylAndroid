@@ -10,7 +10,7 @@ data class Episodes(
     val title: String,
     val season: String,
     val air_date: String,
-    val characters: String,
+    val characters: List<String>,
     val episode: String,
     val series: String
 )
