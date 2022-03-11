@@ -14,3 +14,7 @@ data class Episodes(
     val episode: String,
     val series: String
 )
+
+data class Response(
+    val episode: List<Episodes>
+)

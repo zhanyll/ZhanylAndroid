@@ -43,28 +43,29 @@ class MainFragment: Fragment(R.layout.main_fragment) {
     private fun getAll() {
         api.getEpisodes()
             .subscribeOn(Schedulers.io())
-            .map {
-                val listEp = mutableListOf<Episodes>()
-                it.forEach {
-                    val episode = Episodes(
-                        episode_id = it.episode_id,
-                        title = it.title,
-                        season = it.season,
-                        air_date = it.air_date,
-                        characters = it.characters.toString(),
-                        episode = it.episode,
-                        series = it.series
-                    )
-                    listEp.add(episode)
-                }
-                listEp.toList()
-                dbInstance.episodesDao().insertList(listEp)
-                it
-            }
+            .map(::mapTo)
+            .doOnNext { dbInstance.episodesDao().insertList(it) }
+            .onErrorResumeNext(dbInstance.episodesDao().getAll())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { list ->
-                adapter.setData(list)
-            }
+            .doOnNext { adapter.setData(it) }
+            .doFinally { swipeRefresh.isRefreshing = false }
             .subscribe()
+    }
+
+    private fun mapTo(list: List<Episode>): List<Episodes> {
+        val listEp = mutableListOf<Episodes>()
+        list.forEach {
+            val episode = Episodes(
+                episode_id = it.episode_id,
+                title = it.title,
+                season = it.season,
+                air_date = it.air_date,
+                characters = it.characters.toString(),
+                episode = it.episode,
+                series = it.series
+            )
+            listEp.add(episode)
+        }
+        return listEp.toList()
     }
 }

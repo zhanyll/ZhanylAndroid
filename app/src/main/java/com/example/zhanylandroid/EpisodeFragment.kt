@@ -10,6 +10,7 @@ import io.reactivex.schedulers.Schedulers
 
 class EpisodeFragment: Fragment(R.layout.episode_fragment) {
     private val api get() = Injector.breakingBadApi
+    private val dbInstance get() = Injector.database
     private var _binding: EpisodeFragmentBinding?= null
     private val binding get() = _binding!!
     private lateinit var listener: Clicked

@@ -5,11 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.zhanylandroid.database.Episodes
 
-class MyAdapter(private val click: (episode: Episode) -> Unit): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
-    private var list: List<Episode> = mutableListOf()
+class MyAdapter(private val click: (episode: Episodes) -> Unit): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+    private var list: List<Episodes> = mutableListOf()
 
-    fun setData(list: List<Episode>) {
+    fun setData(list: List<Episodes>) {
         this.list = list
         notifyDataSetChanged()
     }
@@ -30,8 +31,8 @@ class MyAdapter(private val click: (episode: Episode) -> Unit): RecyclerView.Ada
     }
 
     class ViewHolder(itemView: View,
-                     private val click: (episode: Episode) -> Unit): RecyclerView.ViewHolder(itemView) {
-        fun bind(item: Episode) {
+                     private val click: (episode: Episodes) -> Unit): RecyclerView.ViewHolder(itemView) {
+        fun bind(item: Episodes) {
             val txt = itemView.findViewById<AppCompatTextView>(R.id.item_txt)
             txt.text = item.title
 

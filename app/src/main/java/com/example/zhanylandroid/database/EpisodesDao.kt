@@ -1,14 +1,16 @@
 package com.example.zhanylandroid.database
 
 import androidx.room.*
+import io.reactivex.Observable
+import io.reactivex.Single
 
 @Dao
 interface EpisodesDao {
     @Query("SELECT * FROM Episodes")
-    fun getAll(): List<Episodes>
+    fun getAll(): Observable<List<Episodes>>
 
     @Query("SELECT * FROM Episodes WHERE episode_id = :episode_id")
-    fun getById(episode_id: Long?): Episodes
+    fun getById(episode_id: Long?): Single<Episodes>
 
     @Insert
     fun insert(episode: Episodes): Long
