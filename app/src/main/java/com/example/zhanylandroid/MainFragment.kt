@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +34,10 @@ class MainFragment: Fragment(R.layout.main_fragment) {
         recycler.addItemDecoration(DividerItemDecoration(activity, RecyclerView.VERTICAL))
         getAll()
 
+        dbInstance.episodesDao().getAll().observe(viewLifecycleOwner) {
+            adapter.setData(it)
+        }
+
         swipeRefresh = view.findViewById(R.id.swipeRefreshLayout)
         swipeRefresh.setOnRefreshListener { getAll() }
         swipeRefresh.setColorSchemeResources(
@@ -43,11 +48,13 @@ class MainFragment: Fragment(R.layout.main_fragment) {
     private fun getAll() {
         api.getEpisodes()
             .subscribeOn(Schedulers.io())
+            .map {
+                Thread.sleep(5000)
+                it
+            }
             .map(::mapTo)
             .doOnNext { dbInstance.episodesDao().insertList(it) }
-            .onErrorResumeNext(dbInstance.episodesDao().getAll())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { adapter.setData(it) }
             .doFinally { swipeRefresh.isRefreshing = false }
             .subscribe()
     }
