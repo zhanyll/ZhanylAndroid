@@ -1,8 +1,11 @@
-package com.example.zhanylandroid
+package com.example.zhanylandroid.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.zhanylandroid.ui.Clicked
+import com.example.zhanylandroid.R
 import com.example.zhanylandroid.databinding.ActivityMainBinding
+import com.example.zhanylandroid.ui.EpisodeFragment
 
 class MainActivity : AppCompatActivity(), Clicked {
     private lateinit var binding: ActivityMainBinding
@@ -25,13 +28,8 @@ class MainActivity : AppCompatActivity(), Clicked {
     }
 
     override fun onClick(id: Long) {
-        val episodeFragment = EpisodeFragment()
-        val bundle = Bundle()
-        bundle.putLong("id", id)
-        episodeFragment.arguments = bundle
-
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, episodeFragment)
+            .add(R.id.fragment_container, EpisodeFragment.newInstance(id))
             .addToBackStack(null)
             .commit()
     }

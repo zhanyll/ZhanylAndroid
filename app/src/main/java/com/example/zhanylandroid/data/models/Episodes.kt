@@ -1,4 +1,4 @@
-package com.example.zhanylandroid.database
+package com.example.zhanylandroid.data.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -13,8 +13,4 @@ data class Episodes(
     val characters: String,
     val episode: String,
     val series: String
-)
-
-data class Response(
-    val episode: List<Episodes>
 )

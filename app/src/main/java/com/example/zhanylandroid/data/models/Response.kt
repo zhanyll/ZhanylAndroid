@@ -1,4 +1,4 @@
-package com.example.zhanylandroid
+package com.example.zhanylandroid.data.models
 
 data class Response(
     val episodes: List<Episode>

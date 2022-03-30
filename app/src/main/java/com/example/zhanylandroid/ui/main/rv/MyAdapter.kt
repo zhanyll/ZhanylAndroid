@@ -1,11 +1,12 @@
-package com.example.zhanylandroid
+package com.example.zhanylandroid.ui.main.rv
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.zhanylandroid.database.Episodes
+import com.example.zhanylandroid.R
+import com.example.zhanylandroid.data.models.Episodes
 
 class MyAdapter(private val click: (episode: Episodes) -> Unit): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     private var list: List<Episodes> = mutableListOf()

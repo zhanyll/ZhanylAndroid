@@ -4,7 +4,8 @@ import android.app.Application
 import android.util.Log
 import androidx.room.Room
 import androidx.viewbinding.BuildConfig
-import com.example.zhanylandroid.database.AppDatabase
+import com.example.zhanylandroid.data.network.BreakingBadApi
+import com.example.zhanylandroid.data.storage.AppDatabase
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -24,7 +25,6 @@ class App: Application() {
 
         database = Room.databaseBuilder(this, AppDatabase::class.java, "database")
             .fallbackToDestructiveMigration()
-            .allowMainThreadQueries()
             .build()
 
         val okHttpClient = OkHttpClient.Builder()

@@ -1,13 +1,14 @@
-package com.example.zhanylandroid.database
+package com.example.zhanylandroid.data.storage
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
-import io.reactivex.Observable
+import com.example.zhanylandroid.data.models.Episodes
 import io.reactivex.Single
 
 @Dao
 interface EpisodesDao {
     @Query("SELECT * FROM Episodes")
-    fun getAll(): Observable<List<Episodes>>
+    fun getAll(): LiveData<List<Episodes>>
 
     @Query("SELECT * FROM Episodes WHERE episode_id = :episode_id")
     fun getById(episode_id: Long?): Single<Episodes>
@@ -16,7 +17,7 @@ interface EpisodesDao {
     fun insert(episode: Episodes): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertList(characters: List<Episodes>)
+    fun insertList(episodes: List<Episodes>)
 
     @Update
     fun update(episode: Episodes)
