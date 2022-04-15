@@ -1,7 +1,9 @@
 package com.example.zhanylandroid.ui
 
+import androidx.fragment.app.Fragment
+
 interface Clicked {
     fun onClick(id: Long) {}
 
-    fun onMain() {}
+    fun onMain(fragment: Fragment, addToBackStack: Boolean? = true) {}
 }

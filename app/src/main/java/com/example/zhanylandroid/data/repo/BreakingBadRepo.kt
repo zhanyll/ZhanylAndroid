@@ -6,8 +6,9 @@ import com.example.zhanylandroid.data.storage.EpisodesDao
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class BreakingBadRepo(
+class BreakingBadRepo @Inject constructor(
     private val breakingBadApi: BreakingBadApi,
     private val episodesDao: EpisodesDao
 ) {

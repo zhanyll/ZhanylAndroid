@@ -5,8 +5,9 @@ import com.example.zhanylandroid.data.models.Episodes
 import com.example.zhanylandroid.extensions.toEpisodesEntity
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import javax.inject.Inject
 
-class GetEpisodeUseCase(private val breakingBadRepo: BreakingBadRepo) {
+class GetEpisodeUseCase @Inject constructor(private val breakingBadRepo: BreakingBadRepo) {
     operator fun invoke(): Observable<Unit> {
         return breakingBadRepo.getEpisodes()
             .map {

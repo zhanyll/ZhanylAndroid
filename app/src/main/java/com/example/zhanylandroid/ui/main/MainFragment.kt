@@ -8,17 +8,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.zhanylandroid.*
 import com.example.zhanylandroid.databinding.MainFragmentBinding
 import com.example.zhanylandroid.ui.Clicked
 import com.example.zhanylandroid.ui.main.rv.MyAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainFragment: Fragment(R.layout.main_fragment) {
     private lateinit var vm: MainViewModel
     private lateinit var listener: Clicked
     private lateinit var adapter: MyAdapter
-    private lateinit var swipeRefresh: SwipeRefreshLayout
 
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
@@ -45,18 +45,20 @@ class MainFragment: Fragment(R.layout.main_fragment) {
     }
 
     private fun setRefresh() {
-        swipeRefresh = binding.swipeRefreshLayout
-        swipeRefresh.setOnRefreshListener { vm.loadEpisodes() }
-        swipeRefresh.setColorSchemeResources(
-            android.R.color.holo_blue_bright
-        )
+        binding.run {
+            swipeRefreshLayout.setOnRefreshListener { vm.loadEpisodes() }
+            swipeRefreshLayout.setColorSchemeResources(
+                android.R.color.holo_blue_bright
+            )
+        }
     }
 
     private fun setAdapter() {
-        binding.recycler.adapter = adapter
-        binding.recycler.layoutManager = LinearLayoutManager(activity)
-        binding.recycler.addItemDecoration(DividerItemDecoration(activity, RecyclerView.VERTICAL))
-
+        binding.run {
+            recycler.adapter = adapter
+            recycler.layoutManager = LinearLayoutManager(activity)
+            recycler.addItemDecoration(DividerItemDecoration(activity, RecyclerView.VERTICAL))
+        }
         vm.episodesLiveData.observe(viewLifecycleOwner) {
             adapter.setData(it)
         }

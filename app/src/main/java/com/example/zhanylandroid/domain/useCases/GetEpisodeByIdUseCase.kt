@@ -4,8 +4,9 @@ import com.example.zhanylandroid.data.models.Episode
 import com.example.zhanylandroid.data.repo.BreakingBadRepo
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import javax.inject.Inject
 
-class GetEpisodeByIdUseCase(
+class GetEpisodeByIdUseCase @Inject constructor(
     private val breakingBadRepo: BreakingBadRepo
 ) {
     operator fun invoke(id: Long): Single<Episode> {
@@ -14,6 +15,5 @@ class GetEpisodeByIdUseCase(
                 it[0]
             }
             .observeOn(AndroidSchedulers.mainThread())
-        // почему мы здесь не делаем .subscribe ?
     }
 }

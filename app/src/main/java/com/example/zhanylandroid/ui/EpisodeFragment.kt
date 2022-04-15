@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.zhanylandroid.Injector
 import com.example.zhanylandroid.R
 import com.example.zhanylandroid.databinding.EpisodeFragmentBinding
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EpisodeFragment: Fragment(R.layout.episode_fragment) {
-    private val api get() = Injector.breakingBadApi
     private var _binding: EpisodeFragmentBinding?= null
     private val binding get() = _binding!!
     private lateinit var listener: Clicked
@@ -37,18 +35,24 @@ class EpisodeFragment: Fragment(R.layout.episode_fragment) {
         subscribeToLiveData()
     }
 
-    fun subscribeToLiveData() {
+    private fun subscribeToLiveData() {
         viewModel.event.observe(viewLifecycleOwner) {
             when (it) {
                 is Event.FetchedEpisode -> {
-                    binding.episodeTitle.text = "Title: ${it.episode.title}"
-                    binding.episodeSeason.text = "Season: ${it.episode.season}"
-                    binding.episode.text = "Episode: ${it.episode.episode}"
-                    binding.episodeCharacters.text = "Characters: ${it.episode.characters}"
-                    binding.episodeDate.text = "Date: ${it.episode.air_date}"
-                    binding.episodesSeries.text = "Series: ${it.episode.series}"
+                    setDataToText(it)
                 }
             }
+        }
+    }
+
+    private fun setDataToText(it: Event.FetchedEpisode) {
+        binding.run {
+            episodeTitle.text = "Title: ${it.episode.title}"
+            episodeSeason.text = "Season: ${it.episode.season}"
+            episode.text = "Episode: ${it.episode.episode}"
+            episodeCharacters.text = "Characters: ${it.episode.characters}"
+            episodeDate.text = "Date: ${it.episode.air_date}"
+            episodesSeries.text = "Series: ${it.episode.series}"
         }
     }
 

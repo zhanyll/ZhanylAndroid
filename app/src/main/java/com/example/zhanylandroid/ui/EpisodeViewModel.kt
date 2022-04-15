@@ -4,14 +4,16 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.zhanylandroid.App
-import com.example.zhanylandroid.data.repo.BreakingBadRepo
 import com.example.zhanylandroid.domain.useCases.GetEpisodeByIdUseCase
-import io.reactivex.android.schedulers.AndroidSchedulers
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class EpisodeViewModel(application: Application): AndroidViewModel(application) {
+@HiltViewModel
+class EpisodeViewModel @Inject constructor(
+    application: Application,
+    private val getEpisodeByIdUseCase: GetEpisodeByIdUseCase
+): AndroidViewModel(application) {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     private  var id: Long? = null
@@ -22,20 +24,12 @@ class EpisodeViewModel(application: Application): AndroidViewModel(application) 
     private val _event = MutableLiveData<Event?>()
     val event: LiveData<Event?> get() = _event
 
-    private val breakingBadRepo = BreakingBadRepo(
-        getApplication<App>().breakingBadApi,
-        getApplication<App>().database.episodesDao()
-    )
-
-    private val getEpisodeByIdUseCase: GetEpisodeByIdUseCase =
-        GetEpisodeByIdUseCase(breakingBadRepo)
-
     fun fetchEpisode() {
         id?.let {
             compositeDisposable.add(
                 getEpisodeByIdUseCase(it)
-                    .doOnSuccess {
-                        _event.value = Event.FetchedEpisode(it)
+                    .doOnSuccess { episode ->
+                        _event.value = Event.FetchedEpisode(episode)
                     }
                     .map { episode ->
                         episode

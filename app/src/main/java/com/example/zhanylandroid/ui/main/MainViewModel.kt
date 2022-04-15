@@ -2,32 +2,29 @@ package com.example.zhanylandroid.ui.main
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.zhanylandroid.App
 import com.example.zhanylandroid.ui.Event
 import com.example.zhanylandroid.R
-import com.example.zhanylandroid.data.repo.BreakingBadRepo
 import com.example.zhanylandroid.data.models.Episodes
 import com.example.zhanylandroid.domain.useCases.GetEpisodeUseCase
+import com.example.zhanylandroid.domain.useCases.GetEpisodesAsLiveDataUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import java.net.UnknownHostException
+import javax.inject.Inject
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    application: Application,
+    private val getEpisodeUseCase: GetEpisodeUseCase,
+    getEpisodesAsLiveDataUseCase: GetEpisodesAsLiveDataUseCase
+): AndroidViewModel(application) {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    private val breakingBadRepo = BreakingBadRepo(
-        getApplication<App>().breakingBadApi,
-        getApplication<App>().database.episodesDao()
-    )
-
-    private val getEpisodeUseCase = GetEpisodeUseCase(breakingBadRepo)
-
     val episodesLiveData: LiveData<List<Episodes>> =
-        getApplication<App>().database.episodesDao().getAll()
-
+        getEpisodesAsLiveDataUseCase()
 
     private val _event = MutableLiveData<Event?>()
-    val event: LiveData<Event?> get() = _event
 
     init {
         loadEpisodes()
